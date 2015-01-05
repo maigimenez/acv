@@ -7,6 +7,7 @@
 import sys
 import struct
 import pygame
+from os.path import join, dirname
 from pygame.locals import *
 from pygame import Rect
 from xml.etree import ElementTree
@@ -59,10 +60,10 @@ class Tileset(object):
         self.properties = {}
 
     @classmethod
-    def fromxml(cls, tag, firstgid=None):
+    def fromxml(cls, path, tag, firstgid=None):
         if 'source' in tag.attrib:
             firstgid = int(tag.attrib['firstgid'])
-            with open(tag.attrib['source']) as f:
+            with open(join(path, tag.attrib['source'])) as f:
                 tileset = ElementTree.fromstring(f.read())
             return cls.fromxml(tileset, firstgid)
 
@@ -77,7 +78,7 @@ class Tileset(object):
         for c in tag.getchildren():
             if c.tag == "image":
                 # create a tileset
-                tileset.add_image(c.attrib['source'])
+                tileset.add_image(join(path, c.attrib['source']))
             elif c.tag == 'tile':
                 gid = tileset.firstgid + int(c.attrib['id'])
                 tileset.get_tile(gid).loadxml(c)
@@ -275,7 +276,8 @@ class Layer(object):
         self.position = (x, y)
 
     def draw(self, surface):
-        '''Draw this layer, limited to the current viewport, to the Surface.
+        '''
+        Draw this layer, limited to the current viewport, to the Surface.
         '''
         ox, oy = self.position
         w, h = self.view_w, self.view_h
@@ -289,8 +291,7 @@ class Layer(object):
                 surface.blit(cell.tile.surface, (cell.px - ox, cell.py - oy))
 
     def find(self, *properties):
-        '''Find all cells with the given properties set.
-        '''
+        '''Find all cells with the given properties set. '''
         r = []
         for propname in properties:
             for cell in self.cells.values():
@@ -491,7 +492,7 @@ visible: Whether the object is shown (1) or hidden (0). Defaults to 1.
 class ObjectLayer(object):
     '''A layer composed of basic primitive shapes.
 
-    Actually encompasses a TMX <objectgroup> but even the TMX documentation
+    Actually encompasses a TMX <objectgroup> but even the TMXTMX documentation
     refers to them as object layers, so I will.
 
     ObjectLayers have some basic properties:
@@ -695,6 +696,7 @@ class TileMap(object):
 
     @classmethod
     def load(cls, filename, viewport):
+        path = dirname(filename)
         with open(filename) as f:
             map = ElementTree.fromstring(f.read())
 
@@ -708,7 +710,7 @@ class TileMap(object):
         tilemap.px_height = tilemap.height * tilemap.tile_height
 
         for tag in map.findall('tileset'):
-            tilemap.tilesets.add(Tileset.fromxml(tag))
+            tilemap.tilesets.add(Tileset.fromxml(path, tag))
 
         for tag in map.findall('layer'):
             layer = Layer.fromxml(tag, tilemap)

@@ -50,12 +50,12 @@ class Game(object):
         clock = pygame.time.Clock()
 
         # Load the background and get its properties
-        background = pygame.image.load('background.png')
+        background = pygame.image.load('resources/backgrounds/mountains.png')
         background_size = background.get_size()
         x = 0
         w, h = background_size
 
-        self.tilemap = tmx.load("map.tmx", screen.get_size())
+        self.tilemap = tmx.load("resources/maps/map.tmx", screen.get_size())
 
         self.sprites = tmx.SpriteLayer()
 
