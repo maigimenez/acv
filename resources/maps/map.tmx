@@ -14,9 +14,30 @@
  <tileset firstgid="19" name="arbol2" tilewidth="32" tileheight="32">
   <image source="arbol2.png" width="96" height="160"/>
  </tileset>
+ <tileset firstgid="34" name="arbol3" tilewidth="32" tileheight="32">
+  <image source="arbol3.png" width="192" height="224"/>
+ </tileset>
+ <tileset firstgid="76" name="bush" tilewidth="32" tileheight="32">
+  <image source="bush.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="80" name="fire" tilewidth="32" tileheight="32">
+  <image source="fire.png" width="64" height="64"/>
+ </tileset>
+ <tileset firstgid="84" name="arbol4" tilewidth="32" tileheight="32">
+  <image source="arbol4.png" width="192" height="288"/>
+ </tileset>
+ <tileset firstgid="138" name="flower" tilewidth="32" tileheight="32">
+  <image source="flower.png" width="32" height="32"/>
+ </tileset>
+ <tileset firstgid="139" name="flower2" tilewidth="32" tileheight="32">
+  <image source="flower2.png" width="32" height="64"/>
+ </tileset>
+ <tileset firstgid="141" name="rock" tilewidth="32" tileheight="32">
+  <image source="rock.png" width="32" height="32"/>
+ </tileset>
  <layer name="Tile Layer 1" width="95" height="32">
   <data encoding="base64" compression="zlib">
-   eJztzkcOwlAUBEHvDCaYZJKJ978kcwikt/hVUu+76wAAAAAAAAAAgArHdEpT9Ugj+rRIy3ROl3QtPWrHkFZpnW7pnubSo3Zs0jaN6ZGe6VV61I5d2qdDeqdP+lYOAfAXP4VnAh0=
+   eJzt1NdTE1EYhvFzh6KRWECl2OiCioCKBVGUXhWUIiBdESyIAoqxISoB/mee3C07ezJ79mzMDH7PzO+OnPcLF1FKkiRJkiRJkiRJkiRJkiRJkiRJkiRJkoLXjyd4igEMYug/2k9nw3iGEYxiDM/3yf4FFKIIxShBaUhvh7ExjglMYgrTmAn5vkS6G1O5X4ZyXEQFKnEppLfD2JjFC7zEHF5hPuT7kt0Y9v5xnEA2LuMKqnAV1aixeNv9vrLcWMBrvMFbvMOix4Ztuht1+yZl4AAOIgcncQq1uIbruIE63LR4W7neV5Yb77GED/iIZax4bATJebfuRt3+isFOJg7hME4jF3m4hdu4g3rcRQM60RXgbeV6XyXZ8NMqPuEz1vAFMY+NIDnv1t2o248Z7ERwBFnIRwHO4B7uoxEP8BBN6EaPj3fjrreV632VZMNPX/EN3/EDP7HusWFaxHW37kbd/rrBVhRHcQxncQ7n0YwWtKIN7egw/B5xx9vK9X6iHYuNLWzgN/7gLzY9NkyLqr3/ky3Njb80+5sBd53t+Py7XjwKYc+0bcvP+73bdseZye+1nx6jL4378YCfM73bdi+R39/rVJXu/X+Z+7djF0GDXO4=
   </data>
  </layer>
  <objectgroup name="triggers">
