@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
         self.resting = False
         self.dy = 0
 
-    def get_position(self):
+    def get_x_position(self):
         return self.rect.x
 
     def update(self, dt, game):
@@ -28,6 +28,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += self.dy * dt
 
         new = self.rect
+        #print(new)
         self.resting = False
         for cell in game.tilemap.layers['triggers'].collide(new, 'blockers'):
             if last.right <= cell.left and new.right > cell.left:
@@ -41,14 +42,18 @@ class Player(pygame.sprite.Sprite):
             if last.top >= cell.bottom and new.top < cell.bottom:
                 new.top = cell.bottom
                 self.dy = 0
-
+        #print(new.x, new.y)
         game.tilemap.set_focus(new.x, new.y)
 
 class Game(object):
     def main(self, screen):
         clock = pygame.time.Clock()
 
-        background = pygame.image.load('fondo.png')
+        # Load the background and get its properties
+        background = pygame.image.load('background.png')
+        background_size = background.get_size()
+        x = 0
+        w, h = background_size
 
         self.tilemap = tmx.load("map.tmx", screen.get_size())
 
@@ -56,6 +61,7 @@ class Game(object):
 
         start_cell = self.tilemap.layers['triggers'].find('player')[0]
         self.player = Player((start_cell.px, start_cell.py), self.sprites)
+        last_x = self.player.get_x_position()
         self.tilemap.layers.append(self.sprites)
 
         while 1:
@@ -66,14 +72,25 @@ class Game(object):
                     return
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     return
+            new_x = self.player.get_x_position()
+            if new_x < w-900:
+                if last_x != new_x:
+                    if last_x < new_x:
+                        x -= (last_x + (new_x/32.)) / 100.
+                    else:
+                        x += (last_x + (new_x/32.)) / 100.
+                    last_x = new_x
+            else:
+                x = -821
+
             self.tilemap.update(dt / 1000., self)
-            screen.blit(background, (0, 0))
+            screen.blit(background, (x, 0))
 
             self.tilemap.draw(screen)
             pygame.display.flip()
 
 if __name__ == '__main__':
     pygame.init()
-    screen = pygame.display.set_mode((1000, 600))
+    screen = pygame.display.set_mode((1280, 720))
     Game().main(screen)
 
