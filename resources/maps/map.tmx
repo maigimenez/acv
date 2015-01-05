@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="32" tilewidth="32" tileheight="32">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="95" height="32" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="triggers" tilewidth="32" tileheight="32">
   <image source="triggers.png" width="192" height="32"/>
   <tile id="0">
@@ -11,9 +11,12 @@
  <tileset firstgid="7" name="arbol_1" tilewidth="32" tileheight="32">
   <image source="arbol1.png" width="96" height="128"/>
  </tileset>
- <layer name="Tile Layer 1" width="100" height="32">
+ <tileset firstgid="19" name="arbol2" tilewidth="32" tileheight="32">
+  <image source="arbol2.png" width="96" height="160"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="95" height="32">
   <data encoding="base64" compression="zlib">
-   eJztzskJwDAQBEH9fMpX/sF6UBJrTBX0v1sDAAAAAAAAAACA/5nSnJbqEYY1bWmvHmHo6Uhn9QjDle70VI8A8Gkv6SQAlw==
+   eJztzkcOwlAUBEHvDCaYZJKJ978kcwikt/hVUu+76wAAAAAAAAAAgArHdEpT9Ugj+rRIy3ROl3QtPWrHkFZpnW7pnubSo3Zs0jaN6ZGe6VV61I5d2qdDeqdP+lYOAfAXP4VnAh0=
   </data>
  </layer>
  <objectgroup name="triggers">
@@ -23,7 +26,7 @@
     <property name="player" value="yes"/>
    </properties>
   </object>
-  <object name="floor" x="0" y="928" width="3200" height="96">
+  <object name="floor" x="0" y="928" width="3040" height="96">
    <properties>
     <property name="blockers" value="t"/>
    </properties>
