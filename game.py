@@ -1,6 +1,7 @@
 import pygame
 from libs import tmx
 from player import Player
+from enemy import Enemy
 
 class Game(object):
     def main(self, screen):
@@ -15,11 +16,18 @@ class Game(object):
         self.tilemap = tmx.load("resources/maps/map.tmx", screen.get_size())
 
         self.sprites = tmx.SpriteLayer()
-
+        # Load the player
         start_cell = self.tilemap.layers['triggers'].find('player')[0]
         self.player = Player((start_cell.px, start_cell.py), self.sprites)
         last_x = self.player.get_x_position()
         self.tilemap.layers.append(self.sprites)
+
+        # Load the enemies
+        self.enemies = tmx.SpriteLayer()
+        for enemy in self.tilemap.layers['triggers'].find('enemy'):
+            Enemy((enemy.px, enemy.py), self.enemies)
+        self.tilemap.layers.append(self.enemies)
+
 
         while 1:
             dt = clock.tick(30)
@@ -35,6 +43,10 @@ class Game(object):
 
             self.tilemap.draw(screen)
             pygame.display.flip()
+
+            if self.player.is_dead:
+                print ("Has muerto!")
+                return
 
 if __name__ == '__main__':
     pygame.init()
