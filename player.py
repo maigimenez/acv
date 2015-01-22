@@ -3,11 +3,14 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
         super(Player, self).__init__(*groups)
-        self.image = pygame.image.load('resources/characters/nena_derecha.png')
+        self.image_right = pygame.image.load('resources/characters/nena_derecha.png')
+        self.image_left = pygame.image.load('resources/characters/nena_izquierda.png')
+        self.image = self.image_right
         self.rect = pygame.rect.Rect(location, self.image.get_size())
         self.resting = False
         self.dy = 0
         self.is_dead = False
+        self.direction = 1
 
     def get_x_position(self):
         return self.rect.x
@@ -18,8 +21,12 @@ class Player(pygame.sprite.Sprite):
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
             self.rect.x -= 300 * dt
+            self.image = self.image_left
+            self.direction = -1
         if key[pygame.K_RIGHT]:
             self.rect.x += 300 * dt
+            self.image = self.image_right
+            self.direction = 1
 
         if self.resting and key[pygame.K_SPACE]:
             self.dy = -600
