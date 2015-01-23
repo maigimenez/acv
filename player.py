@@ -1,4 +1,5 @@
 import pygame
+from weapon import Weapon
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
@@ -11,6 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.dy = 0
         self.is_dead = False
         self.direction = 1
+        self.cool_down = 0
 
     def get_x_position(self):
         return self.rect.x
@@ -19,15 +21,29 @@ class Player(pygame.sprite.Sprite):
         last = self.rect.copy()
 
         key = pygame.key.get_pressed()
+        # Handle a step to the left
         if key[pygame.K_LEFT]:
             self.rect.x -= 300 * dt
             self.image = self.image_left
             self.direction = -1
+
+        # Handle a step to the right
         if key[pygame.K_RIGHT]:
             self.rect.x += 300 * dt
             self.image = self.image_right
             self.direction = 1
 
+        print(self.cool_down)
+        # Handle a shoot
+        if key[pygame.K_LSHIFT] and not self.cool_down:
+            if self.direction > 0:
+                Weapon(self.rect.midright, 1, game.sprites)
+            else:
+                Weapon(self.rect.midleft, -1, game.sprites)
+            self.cool_down = 1
+        self.cool_down = max(0, self.cool_down - dt)
+
+        # Handle a jump
         if self.resting and key[pygame.K_SPACE]:
             self.dy = -600
         self.dy = min(300, self.dy + 40)
