@@ -1,5 +1,7 @@
 import pygame
+from random import randrange
 from weapon import Weapon
+
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, location, *groups):
@@ -13,6 +15,11 @@ class Player(pygame.sprite.Sprite):
         self.is_dead = False
         self.direction = 1
         self.cool_down = 0
+
+        # Load the sounds
+        self.jump = pygame.mixer.Sound('resources/audio/242623__reitanna__grunt.ogg')
+        self.shoot = [pygame.mixer.Sound('resources/audio/242661__reitanna__really.ogg'),
+                      pygame.mixer.Sound('resources/audio/242668__reitanna__okay.ogg')]
 
     def get_x_position(self):
         return self.rect.x
@@ -40,11 +47,13 @@ class Player(pygame.sprite.Sprite):
             else:
                 Weapon(self.rect.midleft, -1, game.sprites)
             self.cool_down = 1
+            self.shoot[randrange(0,len(self.shoot))].play()
         self.cool_down = max(0, self.cool_down - dt)
 
         # Handle a jump
         if self.resting and key[pygame.K_SPACE]:
             self.dy = -600
+            self.jump.play()
         self.dy = min(300, self.dy + 40)
 
         self.rect.y += self.dy * dt
