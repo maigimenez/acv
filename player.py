@@ -17,7 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.cool_down = 0
 
         # Load the sounds
-        self.jump = pygame.mixer.Sound('resources/audio/242623__reitanna__grunt.ogg')
+        self.jump = pygame.mixer.Sound('resources/audio/188542__alex-audio__breathjump01-thm-adventure.ogg')
         self.shoot = [pygame.mixer.Sound('resources/audio/242661__reitanna__really.ogg'),
                       pygame.mixer.Sound('resources/audio/242668__reitanna__okay.ogg')]
 
