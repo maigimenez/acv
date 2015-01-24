@@ -13,7 +13,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self, dt, game):
         self.rect.x += self.direction * 100 * dt
-        for cell in game.tilemap.layers['triggers'].collide(self.rect, 'reverse'):
+        for cell in game.tile_map.layers['triggers'].collide(self.rect, 'reverse'):
             if self.direction > 0:
                 self.rect.right = cell.left
                 self.image = self.image_left

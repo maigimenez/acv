@@ -4,31 +4,36 @@ from player import Player
 from enemy import Enemy
 
 class Game(object):
-    def main(self, screen):
-        clock = pygame.time.Clock()
-
+    def __init__(self):
         # Load the background and get its properties
-        background = pygame.image.load('resources/backgrounds/mountains.png')
-        background_size = background.get_size()
-        x = 0
-        w, h = background_size
+        self.background = pygame.image.load('resources/backgrounds/mountains.png')
+        self.background_size = self.background.get_size()
 
-        self.tilemap = tmx.load("resources/maps/map.tmx", screen.get_size())
-
+        self.tile_map = tmx.load("resources/maps/map.tmx", screen.get_size())
         self.sprites = tmx.SpriteLayer()
+        self.enemies = tmx.SpriteLayer()
+
         # Load the player
-        start_cell = self.tilemap.layers['triggers'].find('player')[0]
+        start_cell = self.tile_map.layers['triggers'].find('player')[0]
         self.player = Player((start_cell.px, start_cell.py), self.sprites)
-        last_x = self.player.get_x_position()
-        self.tilemap.layers.append(self.sprites)
 
         # Load the enemies
-        self.enemies = tmx.SpriteLayer()
-        for enemy in self.tilemap.layers['triggers'].find('enemy'):
+        for enemy in self.tile_map.layers['triggers'].find('enemy'):
             Enemy((enemy.px, enemy.py), self.enemies)
-        self.tilemap.layers.append(self.enemies)
+        self.tile_map.layers.append(self.enemies)
 
+    def main(self, screen):
+        # System clock to synchronize
+        clock = pygame.time.Clock()
 
+        # Variables to handle the scroll
+        x = 0
+        w, h = self.background_size
+
+        last_x = self.player.get_x_position()
+        self.tile_map.layers.append(self.sprites)
+
+        # Main loop
         while 1:
             dt = clock.tick(30)
 
@@ -38,10 +43,11 @@ class Game(object):
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     return
 
-            self.tilemap.update(dt / 1000., self)
-            screen.blit(background, ((-self.tilemap.viewport.x/2), 0))
+            self.tile_map.update(dt / 1000., self)
+            screen.blit(self.background,
+                        ((-self.tile_map.viewport.x/2), 0))
 
-            self.tilemap.draw(screen)
+            self.tile_map.draw(screen)
             pygame.display.flip()
 
             if self.player.is_dead:

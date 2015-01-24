@@ -33,7 +33,6 @@ class Player(pygame.sprite.Sprite):
             self.image = self.image_right
             self.direction = 1
 
-        print(self.cool_down)
         # Handle a shoot
         if key[pygame.K_LSHIFT] and not self.cool_down:
             if self.direction > 0:
@@ -52,7 +51,7 @@ class Player(pygame.sprite.Sprite):
 
         new = self.rect
         self.resting = False
-        for cell in game.tilemap.layers['triggers'].collide(new, 'blockers'):
+        for cell in game.tile_map.layers['triggers'].collide(new, 'blockers'):
             blockers = cell['blockers']
             if 'l' in blockers and last.right <= cell.left and new.right > cell.left:
                 new.right = cell.left
@@ -65,4 +64,4 @@ class Player(pygame.sprite.Sprite):
             if  'b' in blockers and last.top >= cell.bottom and new.top < cell.bottom:
                 new.top = cell.bottom
                 self.dy = 0
-        game.tilemap.set_focus(new.x, new.y)
+        game.tile_map.set_focus(new.x, new.y)
