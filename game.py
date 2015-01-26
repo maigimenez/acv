@@ -4,12 +4,13 @@ from player import Player
 from enemy import Enemy
 
 class Game(object):
-    def __init__(self):
+    def __init__(self, screen):
         # Load the background and get its properties
         self.background = pygame.image.load('resources/backgrounds/mountains.png')
         self.background_size = self.background.get_size()
 
-        self.tile_map = tmx.load("resources/maps/map.tmx", screen.get_size())
+        self.screen = screen
+        self.tile_map = tmx.load("resources/maps/map.tmx", self.screen.get_size())
         self.sprites = tmx.SpriteLayer()
         self.enemies = tmx.SpriteLayer()
 
@@ -22,7 +23,7 @@ class Game(object):
             Enemy((enemy.px, enemy.py), self.enemies)
         self.tile_map.layers.append(self.enemies)
 
-    def main(self, screen):
+    def main(self):
         # System clock to synchronize
         clock = pygame.time.Clock()
 
@@ -44,10 +45,10 @@ class Game(object):
                     return
 
             self.tile_map.update(dt / 1000., self)
-            screen.blit(self.background,
+            self.screen.blit(self.background,
                         ((-self.tile_map.viewport.x/2), 0))
 
-            self.tile_map.draw(screen)
+            self.tile_map.draw(self.screen)
             pygame.display.flip()
 
             if self.player.is_dead:
@@ -57,5 +58,5 @@ class Game(object):
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode((1280, 720))
-    Game().main(screen)
+    Game(screen).main()
 
