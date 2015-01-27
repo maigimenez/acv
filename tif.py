@@ -8,10 +8,13 @@ from game import Game
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
- 
+DARK_BLUE = (35, 38, 56)
+BABY_BLUE = (94, 119, 163)
+DARK_GREEN = (103, 163, 131)
+
 class MenuItem(pygame.font.Font):
     def __init__(self, text, font=None, font_size=30,
-                 font_color=WHITE, (pos_x, pos_y)=(0, 0)):
+                 font_color=DARK_GREEN, (pos_x, pos_y)=(0, 0)):
         pygame.font.Font.__init__(self, font, font_size)
         self.text = text
         self.font_size = font_size
@@ -42,8 +45,8 @@ class MenuItem(pygame.font.Font):
  
  
 class GameMenu():
-    def __init__(self, screen, items, funcs, bg_color=BLACK, font=None, font_size=30,
-                    font_color=WHITE):
+    def __init__(self, screen, items, funcs, bg_color=DARK_BLUE, font=None, font_size=30,
+                    font_color=DARK_GREEN):
         self.screen = screen
         self.scr_width = self.screen.get_rect().width
         self.scr_height = self.screen.get_rect().height
@@ -79,8 +82,7 @@ class GameMenu():
         """
         for item in self.items:
             # Return all to neutral
-            item.set_italic(False)
-            item.set_font_color(WHITE)
+            item.set_font_color(DARK_GREEN)
  
         if self.cur_item is None:
             self.cur_item = 0
@@ -95,8 +97,7 @@ class GameMenu():
             elif key == pygame.K_DOWN and self.cur_item == len(self.items) - 1:
                 self.cur_item = 0
  
-        self.items[self.cur_item].set_italic(True)
-        self.items[self.cur_item].set_font_color(RED)
+        self.items[self.cur_item].set_font_color(BABY_BLUE)
 
         if key == pygame.K_SPACE or key == pygame.K_RETURN:
             text = self.items[self.cur_item].text
@@ -105,12 +106,10 @@ class GameMenu():
     def set_mouse_selection(self, item, mpos):
         """Marks the MenuItem the mouse cursor hovers on."""
         if item.is_mouse_selection(mpos):
-            item.set_font_color(RED)
-            item.set_italic(True)
+            item.set_font_color(BABY_BLUE)
         else:
-            item.set_font_color(WHITE)
-            item.set_italic(False)
- 
+            item.set_font_color(DARK_GREEN)
+
     def run(self):
         mainloop = True
         while mainloop:
@@ -149,25 +148,33 @@ class GameMenu():
  
 
 def display_settings():
-    print("Use the arrows to move arround. Use space to jump and left shift to shoot some amazing facts.")
- 
+    settings_funcs = {'Use the arrows to move around. Use space to jump '
+                      'and left shift to shoot some amazing facts.': display_settings,
+                      'Return': load_main_menu}
+    pygame.display.set_caption('Settings Menu')
+    settings_menu = GameMenu(screen, settings_funcs.keys(), settings_funcs)
+    settings_menu.run()
+
+
 def start_game():
     Game(screen).main()
+
+
+def load_main_menu():
+    funcs = {'Start': start_game,
+             'Settings': display_settings,
+             'Quit': sys.exit}
+
+    pygame.display.set_caption('Game Menu')
+    gm = GameMenu(screen, funcs.keys(), funcs)
+    gm.run()
 
 if __name__ == "__main__":
     pygame.init()
     
     # Creating the screen
     screen = pygame.display.set_mode((1280, 720), 0, 32)
-    #screen = pygame.display.set_mode((640, 480), 0, 32)
- 
-    funcs = {'Start': start_game,
-             'Settings': display_settings,
-             'Quit': sys.exit}
- 
-    pygame.display.set_caption('Game Menu')
-    gm = GameMenu(screen, funcs.keys(), funcs)
-    gm.run()
+    load_main_menu()
 
 
 
